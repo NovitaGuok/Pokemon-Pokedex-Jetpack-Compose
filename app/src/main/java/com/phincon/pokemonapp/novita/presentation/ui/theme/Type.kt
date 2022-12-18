@@ -1,4 +1,4 @@
-package com.phincon.pokemonapp.novita.ui.theme
+package com.phincon.pokemonapp.novita.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
