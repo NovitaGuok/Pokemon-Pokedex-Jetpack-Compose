@@ -7,12 +7,12 @@ import com.phincon.pokemonapp.novita.domain.use_case.GetCompletePokemonDataUseCa
 import com.phincon.pokemonapp.novita.domain.use_case.GetPokemonListUseCase
 import com.phincon.pokemonapp.novita.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
