@@ -2,12 +2,12 @@ package com.phincon.pokemonapp.novita.presentation.home.list_item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,10 +27,10 @@ fun ItemPokemon(data: SpecificPokemon) {
             val (img, name) = createRefs()
             Image(
                 modifier = Modifier
-                    .width(48.dp)
-                    .height(48.dp)
+                    .fillMaxWidth(.75f)
+                    .aspectRatio(1f / 1f)
                     .constrainAs(img) {
-                        top.linkTo(parent.top)
+                        top.linkTo(parent.top, 32.dp)
                         end.linkTo(parent.end)
                         start.linkTo(parent.start)
                     },
@@ -38,10 +38,11 @@ fun ItemPokemon(data: SpecificPokemon) {
                     data.sprites.versions.generationV.blackWhite.animated.front_default
                 ),
                 contentDescription = stringResource(R.string.img_desc_pokemon_animation),
+                contentScale = ContentScale.Crop
             )
             Text(
                 modifier = Modifier.constrainAs(name) {
-                    top.linkTo(img.bottom)
+                    bottom.linkTo(parent.bottom, 32.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },

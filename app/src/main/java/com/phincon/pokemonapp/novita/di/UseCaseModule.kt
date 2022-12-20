@@ -1,6 +1,7 @@
 package com.phincon.pokemonapp.novita.di
 
 import com.phincon.pokemonapp.novita.domain.repository.HomeRepository
+import com.phincon.pokemonapp.novita.domain.use_case.GetCompletePokemonDataUseCase
 import com.phincon.pokemonapp.novita.domain.use_case.GetPokemonListUseCase
 import com.phincon.pokemonapp.novita.domain.use_case.GetSpecificPokemonUseCase
 import dagger.Module
@@ -29,5 +30,17 @@ class UseCaseModule {
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): GetSpecificPokemonUseCase {
         return GetSpecificPokemonUseCase(homeRepository, ioDispatcher)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetCompletePokemonDataUseCase(
+        getSpecificPokemonUseCase: GetSpecificPokemonUseCase,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): GetCompletePokemonDataUseCase {
+        return GetCompletePokemonDataUseCase(
+            getSpecificPokemonUseCase,
+            ioDispatcher
+        )
     }
 }
