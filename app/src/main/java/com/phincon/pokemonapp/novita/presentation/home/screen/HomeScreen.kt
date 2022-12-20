@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.phincon.pokemonapp.novita.R
 import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.presentation.common.list_item.ItemError
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
 import com.phincon.pokemonapp.novita.presentation.home.list_item.ItemPokemon
@@ -34,13 +35,7 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
         content = {
             when (pokemonListState) {
                 is Resource.Loading -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressBar(modifier = Modifier.fillMaxSize())
-                    }
+                    CircularProgressBar(modifier = Modifier.fillMaxSize())
                 }
                 is Resource.Success -> {
                     LazyVerticalGrid(
@@ -55,6 +50,17 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                     ) {
                         items(pokemonListState.data as List<SpecificPokemon>) { item ->
                             ItemPokemon(data = item)
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        ItemError(modifier = Modifier.fillMaxSize()) {
+                            /** TODO */
                         }
                     }
                 }
