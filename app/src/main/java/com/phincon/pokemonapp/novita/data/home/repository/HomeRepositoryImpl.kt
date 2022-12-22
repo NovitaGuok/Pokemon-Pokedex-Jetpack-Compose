@@ -10,8 +10,8 @@ import javax.inject.Inject
 class HomeRepositoryImpl @Inject constructor(
     private val homeRemoteDataSource: HomeRemoteDataSource
 ) : HomeRepository {
-    override suspend fun getPokemonList(): List<Pokemon> {
-        return homeRemoteDataSource.getPokemonList().map { it.toModel() }
+    override suspend fun getPokemonList(offset: Int): List<Pokemon> {
+        return homeRemoteDataSource.getPokemonList(offset).map { it.toModel() }
     }
 
     override suspend fun getSpecificPokemon(name: String): SpecificPokemon {

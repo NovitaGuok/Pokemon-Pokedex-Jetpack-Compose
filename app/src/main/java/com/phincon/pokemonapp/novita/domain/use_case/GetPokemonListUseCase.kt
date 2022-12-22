@@ -14,9 +14,9 @@ class GetPokemonListUseCase @Inject constructor(
     private val homeRepository: HomeRepository,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
-    suspend operator fun invoke(): Flow<Result<List<Pokemon>>> {
+    suspend operator fun invoke(offset: Int): Flow<Result<List<Pokemon>>> {
         return flow {
-            val data = homeRepository.getPokemonList()
+            val data = homeRepository.getPokemonList(offset)
             emit(Result.success(data))
         }.catch { e ->
             emit(Result.failure(e))

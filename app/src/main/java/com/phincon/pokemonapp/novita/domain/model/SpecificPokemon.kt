@@ -7,7 +7,7 @@ data class SpecificPokemon(
     val gameIndices: List<GameIndice> = listOf(),
     val height: Int = 0,
     val held_items: List<Any> = listOf(),
-    val id: Int = 0,
+    override val id: Int = 0,
     val isDefault: Boolean = false,
     val locationAreaEncounters: String = "",
     val moves: List<Move> = listOf(),
@@ -19,4 +19,4 @@ data class SpecificPokemon(
     val stats: List<Stat> = listOf(),
     val types: List<Type> = listOf(),
     val weight: Int = 0
-)
+) : LazyGridData
