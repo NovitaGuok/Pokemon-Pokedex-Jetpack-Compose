@@ -1,7 +1,7 @@
 package com.phincon.pokemonapp.novita.data.home.data_source.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 
 data class SpecificPokemonResponse(
 
@@ -61,22 +61,22 @@ data class SpecificPokemonResponse(
 )
 
 fun SpecificPokemonResponse.toModel() = SpecificPokemon(
-    this.abilities.map { it.toModel() },
-    this.baseExperience,
-    this.forms.map { it.toModel() },
-    this.gameIndices.map { it.toModel() },
-    this.height,
-    this.held_items,
-    this.id,
-    this.isDefault,
-    this.locationAreaEncounters,
-    this.moves.map { it.toModel() },
-    this.name,
-    this.order,
-    this.pastTypes,
-    this.species.toModel(),
-    this.sprites.toModel(),
-    this.stats.map { it.toModel() },
-    this.types.map { it.toModel() },
-    this.weight,
-)
+        this.abilities.map { it.toModel() },
+        this.baseExperience,
+        this.forms.map { it.toModel() },
+        this.gameIndices.map { it.toModel() },
+        this.height,
+        this.held_items,
+        this.id,
+        this.isDefault,
+        this.locationAreaEncounters,
+        this.moves.map { it.toModel() },
+        this.name,
+        this.order,
+        this.pastTypes,
+        this.species.toModel(),
+        this.sprites.toModel(),
+        this.stats.map { it.toModel() },
+        this.types.map { it.toModel() },
+        this.weight,
+    )

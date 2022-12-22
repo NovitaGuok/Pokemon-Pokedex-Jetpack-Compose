@@ -1,7 +1,7 @@
 package com.phincon.pokemonapp.novita.data.home.data_source.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.phincon.pokemonapp.novita.domain.model.VersionGroupDetail
+import com.phincon.pokemonapp.novita.domain.common.model.VersionGroupDetail
 
 data class VersionGroupDetailDto(
 
@@ -16,7 +16,7 @@ data class VersionGroupDetailDto(
 )
 
 fun VersionGroupDetailDto.toModel() = VersionGroupDetail(
-    this.levelLearnedAt,
-    this.moveLearnMethod.toModel(),
-    this.versionGroup.toModel()
-)
+        this.levelLearnedAt,
+        this.moveLearnMethod.toModel(),
+        this.versionGroup.toModel()
+    )

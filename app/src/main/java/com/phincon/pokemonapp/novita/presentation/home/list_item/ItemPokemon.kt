@@ -18,8 +18,8 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.phincon.pokemonapp.novita.R
-import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
-import com.phincon.pokemonapp.novita.domain.model.Sprites
+import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.common.model.Sprites
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.textBold20
 import com.phincon.pokemonapp.novita.util.Extension.capitalize

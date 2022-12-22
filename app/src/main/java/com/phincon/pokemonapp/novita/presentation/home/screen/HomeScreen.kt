@@ -20,9 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.phincon.pokemonapp.novita.R
-import com.phincon.pokemonapp.novita.domain.model.LazyGridData
-import com.phincon.pokemonapp.novita.domain.model.LoadingDataModel
-import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.common.model.LazyGridData
+import com.phincon.pokemonapp.novita.domain.common.model.LoadingDataModel
+import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 import com.phincon.pokemonapp.novita.presentation.common.list_item.ItemError
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme

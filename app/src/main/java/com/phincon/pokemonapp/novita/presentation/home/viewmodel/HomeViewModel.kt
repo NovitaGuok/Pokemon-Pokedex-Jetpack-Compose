@@ -2,21 +2,18 @@ package com.phincon.pokemonapp.novita.presentation.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.phincon.pokemonapp.novita.domain.model.LazyGridData
-import com.phincon.pokemonapp.novita.domain.model.LoadingDataModel
-import com.phincon.pokemonapp.novita.domain.model.PagingDataModel
-import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
-import com.phincon.pokemonapp.novita.domain.use_case.GetCompletePokemonDataUseCase
-import com.phincon.pokemonapp.novita.domain.use_case.GetPokemonListUseCase
+import com.phincon.pokemonapp.novita.domain.common.model.PagingDataModel
+import com.phincon.pokemonapp.novita.domain.home.use_case.GetCompletePokemonDataUseCase
+import com.phincon.pokemonapp.novita.domain.home.use_case.GetPokemonListUseCase
 import com.phincon.pokemonapp.novita.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -29,9 +26,9 @@ class HomeViewModel @Inject constructor(
         const val OFFSET = 20
     }
 
-    private val _pokemonListState: MutableStateFlow<Resource<List<LazyGridData>>> =
+    private val _pokemonListState: MutableStateFlow<Resource<List<com.phincon.pokemonapp.novita.domain.common.model.LazyGridData>>> =
         MutableStateFlow(Resource.Init())
-    val pokemonListState: MutableStateFlow<Resource<List<LazyGridData>>>
+    val pokemonListState: MutableStateFlow<Resource<List<com.phincon.pokemonapp.novita.domain.common.model.LazyGridData>>>
         get() = _pokemonListState
 
     private val _pageState: MutableStateFlow<PagingDataModel> = MutableStateFlow(PagingDataModel())
@@ -85,10 +82,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun combineAllData(res: List<SpecificPokemon>) {
+    private fun combineAllData(res: List<com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon>) {
         _pokemonListState.update {
             var data = it.data.orEmpty().toMutableList()
-            if (data.isNotEmpty() && data.last() is LoadingDataModel) {
+            if (data.isNotEmpty() && data.last() is com.phincon.pokemonapp.novita.domain.common.model.LoadingDataModel) {
                 data = data.dropLast(1).toMutableList()
             }
             val finalResult = listOf(data, res).flatten()
@@ -99,8 +96,8 @@ class HomeViewModel @Inject constructor(
     private fun showLoadingData() {
         _pokemonListState.update {
             val data = it.data.orEmpty().toMutableList()
-            if (data.last() !is LoadingDataModel) {
-                data.add(LoadingDataModel())
+            if (data.last() !is com.phincon.pokemonapp.novita.domain.common.model.LoadingDataModel) {
+                data.add(com.phincon.pokemonapp.novita.domain.common.model.LoadingDataModel())
             }
             return@update Resource.Success(data)
         }
