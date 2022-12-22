@@ -83,7 +83,7 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += "META-INF/*"
         }
     }
 }
@@ -138,6 +138,7 @@ dependencies {
 
     // Image Loader
     implementation "io.coil-kt:coil-compose:$coil_compose_version"
+    implementation "io.coil-kt:coil-gif:$coil_compose_version"
 
     // Log
     implementation "com.jakewharton.timber:timber:$timber_version"

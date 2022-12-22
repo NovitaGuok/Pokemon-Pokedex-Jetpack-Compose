@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PhinCon Technical Test</string>
+
+    <!-- Common -->
+    <string name="all_desc_refresh">Refresh</string>
+
+    <!-- Item Pokemon -->
+    <string name="img_desc_pokemon_animation">Pokemon Animation</string>
 </resources>
