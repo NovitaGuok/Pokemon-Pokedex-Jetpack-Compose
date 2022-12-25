@@ -17,8 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.phincon.pokemonapp.novita.R
 import com.phincon.pokemonapp.novita.domain.common.model.LazyGridData
 import com.phincon.pokemonapp.novita.domain.common.model.LoadingDataModel
@@ -26,15 +27,16 @@ import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 import com.phincon.pokemonapp.novita.presentation.common.list_item.ItemError
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
-import com.phincon.pokemonapp.novita.presentation.home.list_item.ItemPokemon
+import com.phincon.pokemonapp.novita.presentation.home.component.list_item.ItemPokemon
 import com.phincon.pokemonapp.novita.presentation.home.viewmodel.HomeViewModel
 import com.phincon.pokemonapp.novita.util.OnBottomReached
 import com.phincon.pokemonapp.novita.util.Resource
+import com.phincon.pokemonapp.novita.util.ScreenRoute
 
 const val GRID_COLUMN_SIZE = 2
 
 @Composable
-fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hiltViewModel()) {
     val pokemonListState = homeViewModel.pokemonListState.collectAsState().value
     val lazyGridState = rememberLazyGridState()
 
@@ -57,20 +59,34 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                             dimensionResource(R.dimen.size_8)
                         )
                     ) {
-                        items(pokemonListState.data as List<LazyGridData>, span = { item ->
-                            val span = if (item is LoadingDataModel) {
-                                GRID_COLUMN_SIZE
-                            } else {
-                                1
-                            }
-                            GridItemSpan(span)
-                        }) { item ->
+                        items(
+                            items = pokemonListState.data as List<LazyGridData>,
+                            span = { item ->
+                                val span = if (item is LoadingDataModel) {
+                                    GRID_COLUMN_SIZE
+                                } else {
+                                    1
+                                }
+                                GridItemSpan(span)
+                            },
+                            key = { item -> item.id }
+                        ) { item ->
                             when (item) {
                                 is LoadingDataModel -> {
-                                    CircularProgressBar(modifier = Modifier.height(64.dp))
+                                    CircularProgressBar(
+                                        modifier = Modifier.height(
+                                            dimensionResource(
+                                                id = R.dimen.size_64
+                                            )
+                                        )
+                                    )
                                 }
                                 is SpecificPokemon -> {
-                                    ItemPokemon(data = item)
+                                    ItemPokemon(data = item) {
+                                        navController.navigate(
+                                            ScreenRoute.Detail.withArgs(item.name)
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -93,10 +109,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
                 else -> {
                 }
             }
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2)
-            ) {
-            }
         }
     )
 }
@@ -105,6 +117,6 @@ fun HomeScreen(homeViewModel: HomeViewModel = hiltViewModel()) {
 @Composable
 fun HomeScreenPreview() {
     PhinConTechnicalTestTheme {
-        HomeScreen()
+        HomeScreen(rememberNavController())
     }
 }

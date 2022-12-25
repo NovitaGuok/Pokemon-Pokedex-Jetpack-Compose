@@ -16,7 +16,7 @@ data class VersionGroupDetailDto(
 )
 
 fun VersionGroupDetailDto.toModel() = VersionGroupDetail(
-        this.levelLearnedAt,
-        this.moveLearnMethod.toModel(),
-        this.versionGroup.toModel()
-    )
+    this.levelLearnedAt,
+    this.moveLearnMethod.toModel(),
+    this.versionGroup.toModel()
+)

@@ -1,6 +1,7 @@
-package com.phincon.pokemonapp.novita.presentation.home.list_item
+package com.phincon.pokemonapp.novita.presentation.home.component.list_item
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Card
@@ -22,18 +23,23 @@ import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 import com.phincon.pokemonapp.novita.domain.common.model.Sprites
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.textBold20
-import com.phincon.pokemonapp.novita.util.Extension.capitalize
+import com.phincon.pokemonapp.novita.util.Extension.capitalizeWords
 import com.phincon.pokemonapp.novita.util.RandomGenerator.randomColorGenerator
 import com.phincon.pokemonapp.novita.util.gifLoader
 
 @Composable
-fun ItemPokemon(data: SpecificPokemon) {
+fun ItemPokemon(data: SpecificPokemon, onClick: () -> Unit) {
 
     val ctx = LocalContext.current
     val imageLoader = gifLoader(ctx)
     val color = randomColorGenerator()
 
-    Card(modifier = Modifier.aspectRatio(1f / 1f), backgroundColor = Color(color)) {
+    Card(
+        modifier = Modifier
+            .aspectRatio(1f / 1f)
+            .clickable { onClick() },
+        backgroundColor = Color(color)
+    ) {
         ConstraintLayout {
             val (img, name) = createRefs()
             createVerticalChain(img, name, chainStyle = ChainStyle.Packed)
@@ -66,7 +72,7 @@ fun ItemPokemon(data: SpecificPokemon) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
-                text = capitalize(data.name),
+                text = data.name.capitalizeWords(),
                 style = textBold20
             )
         }
@@ -82,6 +88,6 @@ fun ItemPokemonPreview() {
                 name = "bulbasaur",
                 sprites = Sprites(frontDefault = "https://rb.gy/cq38ca")
             )
-        )
+        ) {}
     }
 }

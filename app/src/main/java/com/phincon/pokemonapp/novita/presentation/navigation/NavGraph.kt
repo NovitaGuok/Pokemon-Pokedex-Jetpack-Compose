@@ -2,8 +2,11 @@ package com.phincon.pokemonapp.novita.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.phincon.pokemonapp.novita.presentation.detail.screen.DetailScreen
 import com.phincon.pokemonapp.novita.presentation.home.screen.HomeScreen
 import com.phincon.pokemonapp.novita.util.ScreenRoute
 
@@ -11,7 +14,14 @@ import com.phincon.pokemonapp.novita.util.ScreenRoute
 fun NavGraph(navHostController: NavHostController) {
     NavHost(navController = navHostController, startDestination = ScreenRoute.Home.route) {
         composable(route = ScreenRoute.Home.route) {
-            HomeScreen()
+            HomeScreen(navHostController)
+        }
+        composable(
+            route = ScreenRoute.Detail.route + "/{name}",
+            arguments = listOf(navArgument("name") { type = NavType.StringType })
+        ) {
+            val name = it.arguments?.getString("name")
+            DetailScreen(name.orEmpty())
         }
     }
 }
