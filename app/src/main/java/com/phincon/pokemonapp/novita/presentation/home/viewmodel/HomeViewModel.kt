@@ -2,12 +2,12 @@ package com.phincon.pokemonapp.novita.presentation.home.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.phincon.pokemonapp.novita.domain.model.LazyGridData
-import com.phincon.pokemonapp.novita.domain.model.LoadingDataModel
-import com.phincon.pokemonapp.novita.domain.model.PagingDataModel
-import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
-import com.phincon.pokemonapp.novita.domain.use_case.GetCompletePokemonDataUseCase
-import com.phincon.pokemonapp.novita.domain.use_case.GetPokemonListUseCase
+import com.phincon.pokemonapp.novita.domain.common.model.LazyGridData
+import com.phincon.pokemonapp.novita.domain.common.model.LoadingDataModel
+import com.phincon.pokemonapp.novita.domain.common.model.PagingDataModel
+import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.home.use_case.GetCompletePokemonDataUseCase
+import com.phincon.pokemonapp.novita.domain.home.use_case.GetPokemonListUseCase
 import com.phincon.pokemonapp.novita.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

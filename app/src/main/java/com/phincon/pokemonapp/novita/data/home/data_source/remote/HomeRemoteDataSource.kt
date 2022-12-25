@@ -1,7 +1,7 @@
 package com.phincon.pokemonapp.novita.data.home.data_source.remote
 
 import com.phincon.pokemonapp.novita.data.home.data_source.remote.dto.PokemonDto
-import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 
 interface HomeRemoteDataSource {
     suspend fun getPokemonList(offset: Int): List<PokemonDto>

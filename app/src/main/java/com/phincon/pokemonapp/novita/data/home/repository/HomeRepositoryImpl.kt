@@ -2,9 +2,9 @@ package com.phincon.pokemonapp.novita.data.home.repository
 
 import com.phincon.pokemonapp.novita.data.home.data_source.remote.HomeRemoteDataSource
 import com.phincon.pokemonapp.novita.data.home.data_source.remote.dto.toModel
-import com.phincon.pokemonapp.novita.domain.model.Pokemon
-import com.phincon.pokemonapp.novita.domain.model.SpecificPokemon
-import com.phincon.pokemonapp.novita.domain.repository.HomeRepository
+import com.phincon.pokemonapp.novita.domain.common.model.Pokemon
+import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.home.repository.HomeRepository
 import javax.inject.Inject
 
 class HomeRepositoryImpl @Inject constructor(

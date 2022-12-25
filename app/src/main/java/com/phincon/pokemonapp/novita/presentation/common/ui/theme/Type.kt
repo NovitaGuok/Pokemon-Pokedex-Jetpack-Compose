@@ -44,8 +44,8 @@ val robotoFamily = FontFamily(
     Font(R.font.roboto_black_italic, FontWeight.Bold, FontStyle.Italic),
 )
 
-val textRegular12 = TextStyle(
-    fontSize = 12.sp,
+val textRegular10 = TextStyle(
+    fontSize = 10.sp,
     fontFamily = robotoFamily,
     fontWeight = FontWeight.Normal
 )
@@ -56,8 +56,20 @@ val textRegular14 = TextStyle(
     fontWeight = FontWeight.Normal
 )
 
+val textBold16 = TextStyle(
+    fontSize = 16.sp,
+    fontFamily = robotoFamily,
+    fontWeight = FontWeight.Bold
+)
+
 val textBold20 = TextStyle(
     fontSize = 20.sp,
+    fontFamily = robotoFamily,
+    fontWeight = FontWeight.Bold
+)
+
+val textBold32 = TextStyle(
+    fontSize = 32.sp,
     fontFamily = robotoFamily,
     fontWeight = FontWeight.Bold
 )

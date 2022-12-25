@@ -1,9 +1,9 @@
 package com.phincon.pokemonapp.novita.di
 
-import com.phincon.pokemonapp.novita.domain.repository.HomeRepository
-import com.phincon.pokemonapp.novita.domain.use_case.GetCompletePokemonDataUseCase
-import com.phincon.pokemonapp.novita.domain.use_case.GetPokemonListUseCase
-import com.phincon.pokemonapp.novita.domain.use_case.GetSpecificPokemonUseCase
+import com.phincon.pokemonapp.novita.domain.detail.use_case.GetSpecificPokemonUseCase
+import com.phincon.pokemonapp.novita.domain.home.repository.HomeRepository
+import com.phincon.pokemonapp.novita.domain.home.use_case.GetCompletePokemonDataUseCase
+import com.phincon.pokemonapp.novita.domain.home.use_case.GetPokemonListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

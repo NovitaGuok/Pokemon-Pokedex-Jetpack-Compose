@@ -1,7 +1,7 @@
 package com.phincon.pokemonapp.novita.data.home.data_source.remote.dto
 
 import com.google.gson.annotations.SerializedName
-import com.phincon.pokemonapp.novita.domain.model.GenerationII
+import com.phincon.pokemonapp.novita.domain.common.model.GenerationII
 
 data class GenerationIIDto(
 
