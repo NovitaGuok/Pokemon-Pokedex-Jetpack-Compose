@@ -159,9 +159,9 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
                                         end = dimensionResource(R.dimen.size_16),
                                         top = REGULAR_SPACER_HEIGHT.dp,
                                     ),
-                                text = pokemonData?.abilities?.joinToString(
-                                    separator = ", "
-                                ) { it.ability.name.capitalizeWords() }.orEmpty(),
+                                text = pokemonData?.abilities?.joinToString(separator = ", ") {
+                                    it.ability.name.capitalizeWords()
+                                }.orEmpty(),
                                 style = textRegular14
                             )
                             Text(
