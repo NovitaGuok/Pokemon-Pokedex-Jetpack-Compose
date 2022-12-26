@@ -25,6 +25,7 @@ import com.phincon.pokemonapp.novita.domain.common.model.MyPokemon
 import com.phincon.pokemonapp.novita.presentation.common.list_item.ItemEmpty
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
+import com.phincon.pokemonapp.novita.presentation.my_pokemon.component.app_bar.MyPokemonTopAppBar
 import com.phincon.pokemonapp.novita.presentation.my_pokemon.component.list_item.ItemMyPokemon
 import com.phincon.pokemonapp.novita.presentation.my_pokemon.viewmodel.MyPokemonViewModel
 import com.phincon.pokemonapp.novita.util.Resource
@@ -42,6 +43,11 @@ fun MyPokemonScreen(
     val lazyGridState = rememberLazyGridState()
 
     Scaffold(
+        topBar = {
+            MyPokemonTopAppBar {
+                navController.navigateUp()
+            }
+        },
         content = {
             when (myPokemonListState) {
                 is Resource.Loading -> {

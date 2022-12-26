@@ -27,6 +27,7 @@ import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 import com.phincon.pokemonapp.novita.presentation.common.list_item.ItemError
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
+import com.phincon.pokemonapp.novita.presentation.home.component.app_bar.HomeTopAppBar
 import com.phincon.pokemonapp.novita.presentation.home.component.list_item.ItemPokemon
 import com.phincon.pokemonapp.novita.presentation.home.viewmodel.HomeViewModel
 import com.phincon.pokemonapp.novita.util.OnBottomReached
@@ -41,7 +42,11 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
     val lazyGridState = rememberLazyGridState()
 
     Scaffold(
-        topBar = {},
+        topBar = {
+            HomeTopAppBar {
+                navController.navigate(ScreenRoute.MyPokemon.route)
+            }
+        },
         content = {
             when (pokemonListState) {
                 is Resource.Loading -> {
@@ -57,7 +62,7 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                         ),
                         horizontalArrangement = Arrangement.spacedBy(
                             dimensionResource(R.dimen.size_8)
-                        )
+                        ),
                     ) {
                         items(
                             items = pokemonListState.data as List<LazyGridData>,
