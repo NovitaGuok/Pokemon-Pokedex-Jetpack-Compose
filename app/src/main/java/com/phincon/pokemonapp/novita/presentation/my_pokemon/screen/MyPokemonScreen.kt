@@ -1,7 +1,6 @@
-package com.phincon.pokemonapp.novita.presentation.home.screen
+package com.phincon.pokemonapp.novita.presentation.my_pokemon.screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,34 +21,40 @@ import androidx.navigation.compose.rememberNavController
 import com.phincon.pokemonapp.novita.R
 import com.phincon.pokemonapp.novita.domain.common.model.LazyGridData
 import com.phincon.pokemonapp.novita.domain.common.model.LoadingDataModel
-import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
-import com.phincon.pokemonapp.novita.presentation.common.list_item.ItemError
+import com.phincon.pokemonapp.novita.domain.common.model.MyPokemon
+import com.phincon.pokemonapp.novita.presentation.common.list_item.ItemEmpty
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
-import com.phincon.pokemonapp.novita.presentation.home.component.app_bar.HomeTopAppBar
-import com.phincon.pokemonapp.novita.presentation.home.component.list_item.ItemPokemon
-import com.phincon.pokemonapp.novita.presentation.home.viewmodel.HomeViewModel
-import com.phincon.pokemonapp.novita.util.OnBottomReached
+import com.phincon.pokemonapp.novita.presentation.my_pokemon.component.app_bar.MyPokemonTopAppBar
+import com.phincon.pokemonapp.novita.presentation.my_pokemon.component.list_item.ItemMyPokemon
+import com.phincon.pokemonapp.novita.presentation.my_pokemon.viewmodel.MyPokemonViewModel
 import com.phincon.pokemonapp.novita.util.Resource
 import com.phincon.pokemonapp.novita.util.ScreenRoute
 
 const val GRID_COLUMN_SIZE = 2
 
 @Composable
-fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hiltViewModel()) {
-    val pokemonListState = homeViewModel.pokemonListState.collectAsState().value
+fun MyPokemonScreen(
+    navController: NavController,
+    myPokemonViewModel: MyPokemonViewModel = hiltViewModel()
+) {
+    val myPokemonListState = myPokemonViewModel.myPokemonListState.collectAsState().value
+    val myPokemonList = myPokemonListState.data
     val lazyGridState = rememberLazyGridState()
 
     Scaffold(
         topBar = {
-            HomeTopAppBar {
-                navController.navigate(ScreenRoute.MyPokemon.route)
+            MyPokemonTopAppBar {
+                navController.navigateUp()
             }
         },
         content = {
-            when (pokemonListState) {
+            when (myPokemonListState) {
                 is Resource.Loading -> {
                     CircularProgressBar(modifier = Modifier.fillMaxSize())
+                }
+                is Resource.Empty -> {
+                    ItemEmpty(modifier = Modifier.fillMaxSize())
                 }
                 is Resource.Success -> {
                     LazyVerticalGrid(
@@ -62,10 +66,10 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                         ),
                         horizontalArrangement = Arrangement.spacedBy(
                             dimensionResource(R.dimen.size_8)
-                        ),
+                        )
                     ) {
                         items(
-                            items = pokemonListState.data as List<LazyGridData>,
+                            items = myPokemonList as List<LazyGridData>,
                             span = { item ->
                                 val span = if (item is LoadingDataModel) {
                                     GRID_COLUMN_SIZE
@@ -74,7 +78,6 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                                 }
                                 GridItemSpan(span)
                             },
-                            key = { item -> item.id }
                         ) { item ->
                             when (item) {
                                 is LoadingDataModel -> {
@@ -86,42 +89,35 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                                         )
                                     )
                                 }
-                                is SpecificPokemon -> {
-                                    ItemPokemon(data = item) {
-                                        navController.navigate(
-                                            ScreenRoute.Detail.withArgs(item.name)
-                                        )
-                                    }
+                                is MyPokemon -> {
+                                    ItemMyPokemon(
+                                        data = MyPokemon(
+                                            name = item.name,
+                                            imgUrl = item.imgUrl,
+                                            owned = item.owned
+                                        ),
+                                        onClick = {
+                                            navController.navigate(
+                                                ScreenRoute.Detail.withArgs(item.name)
+                                            )
+                                        },
+                                        onDelete = { myPokemonViewModel.deletePokemon(item.name) }
+                                    )
                                 }
                             }
                         }
                     }
-                    lazyGridState.OnBottomReached(buffer = 2) {
-                        homeViewModel.loadNext()
-                    }
                 }
-                is Resource.Error -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        ItemError(modifier = Modifier.fillMaxSize()) {
-                            /** TODO */
-                        }
-                    }
-                }
-                else -> {
-                }
+                else -> {}
             }
         }
     )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun HomeScreenPreview() {
+@Preview(showBackground = true)
+fun MyPokemonScreenPreview() {
     PhinConTechnicalTestTheme {
-        HomeScreen(rememberNavController())
+        MyPokemonScreen(rememberNavController())
     }
 }

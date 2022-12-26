@@ -1,9 +1,14 @@
 package com.phincon.pokemonapp.novita.di
 
+import com.phincon.pokemonapp.novita.domain.detail.repository.DetailRepository
+import com.phincon.pokemonapp.novita.domain.detail.use_case.CatchPokemonUseCase
 import com.phincon.pokemonapp.novita.domain.detail.use_case.GetSpecificPokemonUseCase
 import com.phincon.pokemonapp.novita.domain.home.repository.HomeRepository
 import com.phincon.pokemonapp.novita.domain.home.use_case.GetCompletePokemonDataUseCase
 import com.phincon.pokemonapp.novita.domain.home.use_case.GetPokemonListUseCase
+import com.phincon.pokemonapp.novita.domain.my_pokemon.repository.MyPokemonRepository
+import com.phincon.pokemonapp.novita.domain.my_pokemon.use_case.DeletePokemonUseCase
+import com.phincon.pokemonapp.novita.domain.my_pokemon.use_case.GetMyPokemonListUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,5 +47,27 @@ class UseCaseModule {
             getSpecificPokemonUseCase,
             ioDispatcher
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetMyPokemonListUseCase(
+        myPokemonRepository: MyPokemonRepository,
+    ): GetMyPokemonListUseCase {
+        return GetMyPokemonListUseCase(myPokemonRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCatchPokemonUseCase(detailRepository: DetailRepository): CatchPokemonUseCase {
+        return CatchPokemonUseCase(detailRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeletePokemonUseCase(
+        myPokemonRepository: MyPokemonRepository
+    ): DeletePokemonUseCase {
+        return DeletePokemonUseCase(myPokemonRepository)
     }
 }

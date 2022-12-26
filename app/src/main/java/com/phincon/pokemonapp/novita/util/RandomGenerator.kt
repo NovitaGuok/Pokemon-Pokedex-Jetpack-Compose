@@ -13,4 +13,9 @@ object RandomGenerator {
             rand.nextInt(256)
         )
     }
+
+    fun randomProbabilityGenerator(): Boolean {
+        val random = Random()
+        return random.nextBoolean()
+    }
 }

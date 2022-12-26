@@ -1,6 +1,9 @@
 package com.phincon.pokemonapp.novita.util
 
 object Constant {
+    // Project Configs
+    const val DB_NAME = "Pokemon"
+
     // Pokemon Stats
     const val TOTAL_HP = "Total HP"
     const val ATK = "Attack"

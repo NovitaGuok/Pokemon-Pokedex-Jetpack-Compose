@@ -14,9 +14,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,7 +31,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.phincon.pokemonapp.novita.R
+import com.phincon.pokemonapp.novita.domain.common.model.MyPokemon
 import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
@@ -45,13 +53,21 @@ import com.phincon.pokemonapp.novita.util.Constant.SP_DEF
 import com.phincon.pokemonapp.novita.util.Constant.TOTAL_HP
 import com.phincon.pokemonapp.novita.util.Extension.capitalizeWords
 import com.phincon.pokemonapp.novita.util.RandomGenerator
+import com.phincon.pokemonapp.novita.util.RandomGenerator.randomProbabilityGenerator
 import com.phincon.pokemonapp.novita.util.Resource
+import com.phincon.pokemonapp.novita.util.ScreenRoute
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 const val REGULAR_SPACER_HEIGHT = 8
 const val SECTION_SPACER_HEIGHT = 20
 
 @Composable
-fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel()) {
+fun DetailScreen(
+    navController: NavController,
+    name: String,
+    detailViewModel: DetailViewModel = hiltViewModel()
+) {
     detailViewModel.getPokemonByName(name)
     val pokemonState = detailViewModel.pokemonState.collectAsState().value
     val pokemonData = pokemonState.data
@@ -62,13 +78,17 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
     val statDesc = listOf(TOTAL_HP, ATK, DEF, SP_ATK, SP_DEF, SPEED)
     val scrollState = rememberScrollState()
     val bgColor = RandomGenerator.randomColorGenerator()
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    var isCaught: Boolean
 
-    Scaffold {
+    Scaffold(scaffoldState = scaffoldState) {
         when (pokemonState) {
             is Resource.Loading -> {
                 CircularProgressBar(modifier = Modifier.fillMaxSize())
             }
             is Resource.Success -> {
+                detailViewModel.cancelJob()
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -83,15 +103,44 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
                         DetailHeader(
                             modifier = Modifier.fillMaxWidth(),
                             pokemon = pokemonData ?: SpecificPokemon()
-                        )
+                        ) {
+                            scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                            isCaught = randomProbabilityGenerator()
+                            if (isCaught) {
+                                detailViewModel.catchPokemon(
+                                    MyPokemon(
+                                        name = pokemonData?.name.orEmpty(),
+                                        imgUrl = frontSprites.orEmpty(),
+                                    )
+                                )
+                                coroutineScope.launch {
+                                    val snackbarResult =
+                                        scaffoldState.snackbarHostState.showSnackbar(
+                                            message = "Gotcha!",
+                                            actionLabel = "See my Pokemon",
+                                            duration = SnackbarDuration.Short
+                                        )
+                                    when (snackbarResult) {
+                                        SnackbarResult.ActionPerformed -> {
+                                            navController.navigate(ScreenRoute.MyPokemon.route)
+                                        }
+                                        else -> {}
+                                    }
+                                }
+                            } else {
+                                coroutineScope.launch {
+                                    scaffoldState.snackbarHostState.showSnackbar(
+                                        message = "Oopsie, it runs away",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                }
+                            }
+                        }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(2f / 1f)
                                 .padding(horizontal = dimensionResource(R.dimen.size_16)),
-                            horizontalArrangement = Arrangement.spacedBy(
-                                dimensionResource(R.dimen.size_16)
-                            )
                         ) {
                             DetailAnimation(
                                 modifier = Modifier.weight(.3f),
@@ -190,7 +239,7 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
                                 repeat(pokemonData?.moves?.size ?: 0) {
                                     val moveName = pokemonData?.moves?.get(it)?.move?.name
                                     ItemPokemonMove(
-                                        moveName = moveName ?: ""
+                                        moveName = moveName.orEmpty()
                                     ) {
                                         /** TODO */
                                     }
@@ -209,6 +258,6 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
 @Preview(showBackground = true)
 fun DetailScreenPreview() {
     PhinConTechnicalTestTheme {
-        DetailScreen("bulbasaur")
+        DetailScreen(rememberNavController(), "bulbasaur")
     }
 }

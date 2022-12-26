@@ -3,9 +3,13 @@
 
     <!-- Common -->
     <string name="all_desc_refresh">Refresh</string>
+    <string name="all_no_data">No data to show</string>
 
     <!-- Item Pokemon -->
     <string name="img_desc_pokemon_animation">Pokemon Animation</string>
+
+    <!-- Home Screen -->
+    <string name="txt_home">Home</string>
 
     <!-- Detail Screen -->
     <string name="txt_detail_weight">Weight: %d kg</string>
@@ -14,6 +18,12 @@
     <string name="txt_detail_title_stats">Stats</string>
     <string name="txt_detail_title_abilities">Abilities</string>
     <string name="txt_detail_title_moves">Moves</string>
+    <string name="txt_detail_catch">Catch!</string>
     <string name="txt_desc_open_in_new">Open in new activity</string>
     <string name="img_desc_pokeball_animation">Pokeball</string>
+
+    <!-- My Pokemon Screen -->
+    <string name="txt_my_pokemon">My Pokemon</string>
+    <string name="img_desc_delete">Delete</string>
+    <string name="txt_my_pokemon_owned">Owned: %d</string>
 </resources>

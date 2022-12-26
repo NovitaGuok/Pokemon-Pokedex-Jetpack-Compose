@@ -1,23 +1,30 @@
 package com.phincon.pokemonapp.novita.presentation.detail.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.phincon.pokemonapp.novita.domain.common.model.MyPokemon
 import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.detail.use_case.CatchPokemonUseCase
 import com.phincon.pokemonapp.novita.domain.detail.use_case.GetSpecificPokemonUseCase
 import com.phincon.pokemonapp.novita.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getSpecificPokemonUseCase: GetSpecificPokemonUseCase
+    private val getSpecificPokemonUseCase: GetSpecificPokemonUseCase,
+    private val catchPokemonUseCase: CatchPokemonUseCase,
 ) : ViewModel() {
     private val _pokemonState: MutableStateFlow<Resource<SpecificPokemon>> =
         MutableStateFlow(Resource.Init())
     val pokemonState: MutableStateFlow<Resource<SpecificPokemon>> get() = _pokemonState
+
+    var job: Job? = null
 
     init {
         initLoading()
@@ -28,7 +35,7 @@ class DetailViewModel @Inject constructor(
     }
 
     fun getPokemonByName(name: String) {
-        runBlocking {
+        job = viewModelScope.launch {
             getSpecificPokemonUseCase.invoke(name).cancellable().collectLatest { res ->
                 when {
                     res.isSuccess -> {
@@ -43,5 +50,16 @@ class DetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun cancelJob() {
+        job?.cancel()
+    }
+
+    fun catchPokemon(pokemon: MyPokemon) {
+        if (!catchPokemonUseCase.isPokemonExist(pokemon.name)) {
+            catchPokemonUseCase.invoke(pokemon)
+        }
+        catchPokemonUseCase.updateOwnedValue(pokemon.name)
     }
 }
