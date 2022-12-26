@@ -7,6 +7,7 @@ import com.phincon.pokemonapp.novita.domain.home.repository.HomeRepository
 import com.phincon.pokemonapp.novita.domain.home.use_case.GetCompletePokemonDataUseCase
 import com.phincon.pokemonapp.novita.domain.home.use_case.GetPokemonListUseCase
 import com.phincon.pokemonapp.novita.domain.my_pokemon.repository.MyPokemonRepository
+import com.phincon.pokemonapp.novita.domain.my_pokemon.use_case.DeletePokemonUseCase
 import com.phincon.pokemonapp.novita.domain.my_pokemon.use_case.GetMyPokemonListUseCase
 import dagger.Module
 import dagger.Provides
@@ -60,5 +61,13 @@ class UseCaseModule {
     @Singleton
     fun provideCatchPokemonUseCase(detailRepository: DetailRepository): CatchPokemonUseCase {
         return CatchPokemonUseCase(detailRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeletePokemonUseCase(
+        myPokemonRepository: MyPokemonRepository
+    ): DeletePokemonUseCase {
+        return DeletePokemonUseCase(myPokemonRepository)
     }
 }

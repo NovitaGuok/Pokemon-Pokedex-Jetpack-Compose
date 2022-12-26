@@ -79,11 +79,11 @@ fun DetailHeader(modifier: Modifier, pokemon: SpecificPokemon, onClick: () -> Un
                         ImageRequest.Builder(ctx).data(R.drawable.ic_pokeball).build(),
                         imageLoader = imageLoader
                     ),
-                    contentDescription = "Pokeball",
+                    contentDescription = stringResource(R.string.img_desc_pokeball_animation),
                 )
                 Text(
                     modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.size_2)),
-                    text = "Catch!",
+                    text = stringResource(R.string.txt_detail_catch),
                     style = textBold16
                 )
             }
