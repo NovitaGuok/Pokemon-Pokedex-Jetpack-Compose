@@ -17,6 +17,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -26,7 +28,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.phincon.pokemonapp.novita.R
+import com.phincon.pokemonapp.novita.domain.common.model.Pokemon
 import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
 import com.phincon.pokemonapp.novita.presentation.common.progress_indicator.CircularProgressBar
 import com.phincon.pokemonapp.novita.presentation.common.ui.theme.PhinConTechnicalTestTheme
@@ -36,6 +41,7 @@ import com.phincon.pokemonapp.novita.presentation.detail.component.animation.Det
 import com.phincon.pokemonapp.novita.presentation.detail.component.chart.HorizontalBar
 import com.phincon.pokemonapp.novita.presentation.detail.component.header.DetailHeader
 import com.phincon.pokemonapp.novita.presentation.detail.component.list_item.ItemPokemonMove
+import com.phincon.pokemonapp.novita.presentation.detail.component.snackbar.SeeMyPokemonSnackbar
 import com.phincon.pokemonapp.novita.presentation.detail.viewmodel.DetailViewModel
 import com.phincon.pokemonapp.novita.util.Constant.ATK
 import com.phincon.pokemonapp.novita.util.Constant.DEF
@@ -45,13 +51,20 @@ import com.phincon.pokemonapp.novita.util.Constant.SP_DEF
 import com.phincon.pokemonapp.novita.util.Constant.TOTAL_HP
 import com.phincon.pokemonapp.novita.util.Extension.capitalizeWords
 import com.phincon.pokemonapp.novita.util.RandomGenerator
+import com.phincon.pokemonapp.novita.util.RandomGenerator.randomProbabilityGenerator
 import com.phincon.pokemonapp.novita.util.Resource
+import com.phincon.pokemonapp.novita.util.ScreenRoute
+import timber.log.Timber
 
 const val REGULAR_SPACER_HEIGHT = 8
 const val SECTION_SPACER_HEIGHT = 20
 
 @Composable
-fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel()) {
+fun DetailScreen(
+    navController: NavController,
+    name: String,
+    detailViewModel: DetailViewModel = hiltViewModel()
+) {
     detailViewModel.getPokemonByName(name)
     val pokemonState = detailViewModel.pokemonState.collectAsState().value
     val pokemonData = pokemonState.data
@@ -62,6 +75,7 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
     val statDesc = listOf(TOTAL_HP, ATK, DEF, SP_ATK, SP_DEF, SPEED)
     val scrollState = rememberScrollState()
     val bgColor = RandomGenerator.randomColorGenerator()
+    val (snackbarVisibleState, setSnackBarState) = remember { mutableStateOf(false) }
 
     Scaffold {
         when (pokemonState) {
@@ -83,7 +97,20 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
                         DetailHeader(
                             modifier = Modifier.fillMaxWidth(),
                             pokemon = pokemonData ?: SpecificPokemon()
-                        )
+                        ) {
+                            val isCaught = randomProbabilityGenerator()
+                            if (isCaught) {
+                                detailViewModel.catchPokemon(
+                                    Pokemon(
+                                        pokemonData?.name.orEmpty(),
+                                        pokemonData?.name.orEmpty()
+                                    )
+                                )
+                                setSnackBarState(!snackbarVisibleState)
+                            } else {
+                                Timber.d("Catch failed")
+                            }
+                        }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -101,6 +128,13 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
                                 modifier = Modifier.weight(.3f),
                                 sprites = backSprites.orEmpty(),
                             )
+                        }
+                    }
+                    Box {
+                        SeeMyPokemonSnackbar(snackbarVisibleState) {
+                            if (snackbarVisibleState) {
+                                navController.navigate(ScreenRoute.MyPokemon.route)
+                            }
                         }
                     }
                     Box(
@@ -190,7 +224,7 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
                                 repeat(pokemonData?.moves?.size ?: 0) {
                                     val moveName = pokemonData?.moves?.get(it)?.move?.name
                                     ItemPokemonMove(
-                                        moveName = moveName ?: ""
+                                        moveName = moveName.orEmpty()
                                     ) {
                                         /** TODO */
                                     }
@@ -209,6 +243,6 @@ fun DetailScreen(name: String, detailViewModel: DetailViewModel = hiltViewModel(
 @Preview(showBackground = true)
 fun DetailScreenPreview() {
     PhinConTechnicalTestTheme {
-        DetailScreen("bulbasaur")
+        DetailScreen(rememberNavController(), "bulbasaur")
     }
 }

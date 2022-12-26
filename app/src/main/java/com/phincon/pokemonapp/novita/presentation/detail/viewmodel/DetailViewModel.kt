@@ -1,7 +1,9 @@
 package com.phincon.pokemonapp.novita.presentation.detail.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.phincon.pokemonapp.novita.domain.common.model.Pokemon
 import com.phincon.pokemonapp.novita.domain.common.model.SpecificPokemon
+import com.phincon.pokemonapp.novita.domain.detail.use_case.CatchPokemonUseCase
 import com.phincon.pokemonapp.novita.domain.detail.use_case.GetSpecificPokemonUseCase
 import com.phincon.pokemonapp.novita.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +15,8 @@ import kotlinx.coroutines.runBlocking
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getSpecificPokemonUseCase: GetSpecificPokemonUseCase
+    private val getSpecificPokemonUseCase: GetSpecificPokemonUseCase,
+    private val catchPokemonUseCase: CatchPokemonUseCase
 ) : ViewModel() {
     private val _pokemonState: MutableStateFlow<Resource<SpecificPokemon>> =
         MutableStateFlow(Resource.Init())
@@ -42,6 +45,12 @@ class DetailViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun catchPokemon(pokemon: Pokemon) {
+        runBlocking {
+            catchPokemonUseCase.invoke(pokemon)
         }
     }
 }
