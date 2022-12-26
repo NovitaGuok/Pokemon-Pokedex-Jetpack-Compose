@@ -29,7 +29,7 @@ import com.phincon.pokemonapp.novita.util.Extension.capitalizeWords
 import com.phincon.pokemonapp.novita.util.gifLoader
 
 @Composable
-fun DetailHeader(modifier: Modifier, pokemon: SpecificPokemon) {
+fun DetailHeader(modifier: Modifier, pokemon: SpecificPokemon, onClick: () -> Unit) {
 
     val ctx = LocalContext.current
     val imageLoader = gifLoader(ctx)
@@ -71,7 +71,7 @@ fun DetailHeader(modifier: Modifier, pokemon: SpecificPokemon) {
                 },
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            onClick = { /*TODO*/ }
+            onClick = { onClick() }
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
@@ -95,6 +95,6 @@ fun DetailHeader(modifier: Modifier, pokemon: SpecificPokemon) {
 @Preview(showBackground = true)
 fun DetailHeaderPreview() {
     PhinConTechnicalTestTheme {
-        DetailHeader(Modifier, SpecificPokemon(name = "bulbasaur", weight = 50, height = 50))
+        DetailHeader(Modifier, SpecificPokemon(name = "bulbasaur", weight = 50, height = 50)) {}
     }
 }
