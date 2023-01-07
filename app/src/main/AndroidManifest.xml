@@ -13,13 +13,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PhinConTechnicalTest"
+        android:theme="@style/Theme.ComposePokemonApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.PhinConTechnicalTest">
+            android:theme="@style/Theme.ComposePokemonApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
