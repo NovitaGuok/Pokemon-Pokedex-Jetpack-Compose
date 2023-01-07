@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PhinCon Technical Test</string>
+    <string name="app_name">Compose Pokemon App</string>
 
     <!-- Common -->
     <string name="all_desc_refresh">Refresh</string>
